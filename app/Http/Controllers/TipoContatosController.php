@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\TipoContato; // Import the TipoContato model
+use App\Models\TipoContato;
 
 class TipoContatosController extends Controller
 {
@@ -21,7 +21,6 @@ class TipoContatosController extends Controller
      */
     public function create()
     {
-        // Return the view for creating a new contact type
         return view('tipocontatos.create');
     }
 
@@ -30,19 +29,14 @@ class TipoContatosController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
         $request->validate([
             'nome' => 'required|string|max:80',
         ]);
 
-        // Create a new contact type
         $tipocontato = new TipoContato();
         $tipocontato->nome = $request->input('nome');
         $tipocontato->descricao = $request->input('descricao');
-        // Save the contact type to the database
-        // Note: The 'descricao' field is optional and can be null
         if ($tipocontato->save()) {
-            // If the contact type is saved successfully, redirect to the index page
             return redirect()->route('tipocontatos.index')->with('success', 'Tipo de contato criado com sucesso!');
         }
     }
@@ -69,20 +63,14 @@ class TipoContatosController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validate the request data
         $request->validate([
             'nome' => 'required|string|max:80',
         ]);
 
-        // Find the contact type by ID
         $tipocontato = TipoContato::findOrFail($id);
-
-        // Update the contact type
         $tipocontato->nome = $request->input('nome');
         $tipocontato->descricao = $request->input('descricao');
-        // Save the updated contact type to the database
         if ($tipocontato->save()) {
-            // If the contact type is updated successfully, redirect to the index page
             return redirect()->route('tipocontatos.index')->with('success', 'Tipo de contato atualizado com sucesso!');
         }
     }
@@ -92,12 +80,9 @@ class TipoContatosController extends Controller
      */
     public function destroy(string $id)
     {
-        // Find the contact type by ID
         $tipocontato = TipoContato::findOrFail($id);
 
-        // Delete the contact type from the database
         if ($tipocontato->delete()) {
-            // If the contact type is deleted successfully, redirect to the index page
             return redirect()->route('tipocontatos.index')->with('success', 'Tipo de contato excluído com sucesso!');
         }
     }

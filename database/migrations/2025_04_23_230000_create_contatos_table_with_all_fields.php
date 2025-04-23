@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Primeiro, vamos verificar se a tabela existe e, se existir, vamos excluí-la
         if (Schema::hasTable('contatos')) {
             Schema::drop('contatos');
         }
 
-        // Agora, vamos criar a tabela novamente com todos os campos necessários
         Schema::create('contatos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
@@ -25,12 +23,9 @@ return new class extends Migration
             $table->text('mensagem')->nullable();
             $table->unsignedBigInteger('tipo_contato_id')->nullable();
             $table->boolean('lido')->default(false);
-            // Adicionando os campos que estavam faltando
             $table->string('cidade')->nullable();
             $table->string('estado')->nullable();
             $table->timestamps();
-            
-            // Adicionando a chave estrangeira para tipo_contato_id
             $table->foreign('tipo_contato_id')
                   ->references('id')
                   ->on('tipo_contatos')

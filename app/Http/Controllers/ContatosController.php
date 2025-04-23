@@ -13,11 +13,9 @@ class ContatosController extends Controller
      */
     public function index()
     {
-        // Fetch all contacts from the database
         $contatos = Contato::all();
         $q = null;
 
-        // Return the view with the contacts data
         return view('contatos.index', compact('contatos','q'));
     }
 
@@ -26,7 +24,6 @@ class ContatosController extends Controller
      */
     public function create()
     {
-        // Return the view for creating a new contact
         $tipocontatos = TipoContato::all();
         return view('contatos.create', compact('tipocontatos'));
     }
@@ -36,14 +33,12 @@ class ContatosController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
         $request->validate([
             'nome' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'telefone' => 'required|string|max:20',
         ]);
 
-        // Create a new contact
         $contato = new Contato();
         $contato->nome = $request->input('nome');
         $contato->email = $request->input('email');
@@ -52,7 +47,6 @@ class ContatosController extends Controller
         $contato->estado = $request->input('estado');
         $contato->tipo_contato_id = $request->input('tipo_contato_id');
         if ($contato->save()) {
-            // If the contact is saved successfully, redirect to the index page
             return redirect()->route('contatos.index')->with('success', 'Contato criado com sucesso!');
         }
     }
@@ -62,22 +56,18 @@ class ContatosController extends Controller
      */
     public function show(string $id)
     {
-        // Find the contact by ID
         $contato = Contato::findOrFail($id);
 
-        // Return the view with the contact data
         return view('contatos.show', compact('contato'));
     }
 
     public function search(Request $request)
     {
         $q=$request->input('q');
-        // Search for contacts based on the search input
         $contatos = Contato::where('nome', 'like', '%' . $request->input('q') . '%')
             ->orWhere('email', 'like', '%' . $request->input('q') . '%')
             ->get();
 
-        // Return the view with the search results
         return view('contatos.index', compact('contatos', 'q'));
     }
 
@@ -97,14 +87,12 @@ class ContatosController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validate the request data
         $request->validate([
             'nome' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'telefone' => 'required|string|max:20',
         ]);
 
-        // Create a new contact
         $contato = Contato::findOrFail($id);
         $contato->nome = $request->input('nome');
         $contato->email = $request->input('email');
@@ -113,7 +101,6 @@ class ContatosController extends Controller
         $contato->estado = $request->input('estado');
         $contato->tipo_contato_id = $request->input('tipo_contato_id');
         if ($contato->save()) {
-            // If the contact is saved successfully, redirect to the index page
             return redirect()->route('contatos.index')->with('success', 'Contato alterado com sucesso!');
         }
     }
